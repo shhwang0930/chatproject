@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class MessageDTO {
     public enum MessageType {
-        ENTER, TALK;
+        ENTER, TALK, QUIT;
     }
     private MessageType type;
     private String roomId;

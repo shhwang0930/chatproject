@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class ChatService {
     private final ChannelTopic channelTopic;
     private final MessageRepository messageRepository;
 
-
+    @Transactional
     public void sendMessage(MessageDTO message, String token) {
         String sender = jwtTokenProvider.getUserNameFromJwt(token);
         // 로그인 회원 정보로 대화명 설정
@@ -34,6 +35,10 @@ public class ChatService {
         if (MessageDTO.MessageType.ENTER.equals(message.getType())) {
             message.setSender("[알림]");
             message.setMessage(sender + "님이 입장하셨습니다.");
+        }
+        if (MessageDTO.MessageType.QUIT.equals(message.getType())){
+            message.setSender("[알림]");
+            message.setMessage(sender + "님이 퇴장하셨습니다.");
         }
         MessageEntity messageEntity = new MessageEntity();
         messageEntity.setSender(sender);
