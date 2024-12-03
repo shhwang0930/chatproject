@@ -1,4 +1,4 @@
-package com.example.javachat.chat.handler;
+package com.example.javachat.chat.interceptor;
 
 
 import com.example.javachat.security.JwtTokenProvider;

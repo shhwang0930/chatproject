@@ -1,7 +1,8 @@
 package com.example.javachat.chat.controller;
 
-import com.example.javachat.chat.dto.RoomDTO;
+import com.example.javachat.chat.model.dto.RoomDTO;
 import com.example.javachat.chat.repository.ChatRoomRepository;
+import com.example.javachat.chat.service.ChatRoomService;
 import com.example.javachat.security.JwtTokenProvider;
 import com.example.javachat.security.dto.LoginDTO;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class ChatRoomController {
 
     private final ChatRoomRepository chatRoomRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ChatRoomService chatRoomService;
 
     @GetMapping("/user")
     @ResponseBody
@@ -32,21 +34,24 @@ public class ChatRoomController {
 
     // 채팅 리스트 화면
     @GetMapping("/room")
-    public String rooms(Model model) {
+    public String room(Model model) {
         return "/chat/room";
     }
+
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
     @ResponseBody
-    public List<RoomDTO> room() {
-        return chatRoomRepository.findAllRoom();
+    public List<RoomDTO> rooms() {
+        return chatRoomService.getRooms();
     }
+
     // 채팅방 생성
     @PostMapping("/room")
     @ResponseBody
     public RoomDTO createRoom(@RequestParam String name) {
-        return chatRoomRepository.createChatRoom(name);
+        return chatRoomService.createRoom(name);
     }
+
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId) {
@@ -57,6 +62,6 @@ public class ChatRoomController {
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public RoomDTO roomInfo(@PathVariable String roomId) {
-        return chatRoomRepository.findRoomById(roomId);
+        return chatRoomService.roomInfo(roomId);
     }
 }

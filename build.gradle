@@ -28,7 +28,7 @@ dependencies {
     implementation 'org.webjars:stomp-websocket:2.3.3-1'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-    //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -37,16 +37,21 @@ dependencies {
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     //embedded-redis
     implementation 'it.ozimov:embedded-redis:0.7.2'
-    //security
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    //security, jwt
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
+    //jwt 버전 맞추기 위함
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+
+    //mysql
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'com.mysql:mysql-connector-j'
 }
 
 tasks.named('test') {

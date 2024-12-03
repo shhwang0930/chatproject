@@ -1,55 +1,38 @@
-/*
-compackage com.example.javachat.chat.service;
 
-import com.example.javachat.chat.dto.RoomDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
+package com.example.javachat.chat.service;
+
+import com.example.javachat.chat.model.dto.MessageDTO;
+import com.example.javachat.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
-import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class ChatService {
 
-    private final ObjectMapper objectMapper;
-    private Map<String, RoomDTO> chatRooms;
+    private final RedisTemplate<String, Object> redisTemplate;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final ChannelTopic channelTopic;
 
-    @PostConstruct
-    private void init() {
-        chatRooms = new LinkedHashMap<>();
-    }
 
-    public List<RoomDTO> findAllRoom() {
-        return new ArrayList<>(chatRooms.values());
-    }
-
-    public RoomDTO findRoomById(String roomId) {
-        return chatRooms.get(roomId);
-    }
-
-    public RoomDTO createRoom(String name) {
-        String randomId = UUID.randomUUID().toString();
-        RoomDTO chatRoom = RoomDTO.builder()
-                .roomId(randomId)
-                .name(name)
-                .build();
-        chatRooms.put(randomId, chatRoom);
-        return chatRoom;
-    }
-
-    public <T> void sendMessage(WebSocketSession session, T message) {
-        try {
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
+    public void sendMessage(MessageDTO message, String token) {
+        String sender = jwtTokenProvider.getUserNameFromJwt(token);
+        // 로그인 회원 정보로 대화명 설정
+        message.setSender(sender);
+        // 채팅방 입장시에는 대화명과 메시지를 자동으로 세팅한다.
+        if (MessageDTO.MessageType.ENTER.equals(message.getType())) {
+            message.setSender("[알림]");
+            message.setMessage(sender + "님이 입장하셨습니다.");
         }
+        // Websocket에 발행된 메시지를 redis로 발행(publish)
+        redisTemplate.convertAndSend(channelTopic.getTopic(), message);
     }
+
 }
-*/
+
+

@@ -1,14 +1,10 @@
 package com.example.javachat.chat.repository;
 
-import com.example.javachat.chat.dto.RoomDTO;
-import com.example.javachat.chat.pubsub.RedisSubscriber;
+import com.example.javachat.chat.model.dto.RoomDTO;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
