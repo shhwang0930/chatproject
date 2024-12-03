@@ -50,6 +50,8 @@ public class ChatRoomController {
     @PostMapping("/room")
     @ResponseBody
     public RoomDTO createRoom(@RequestParam String name) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String sender = auth.getName();
         return chatRoomService.createRoom(name);
     }
 

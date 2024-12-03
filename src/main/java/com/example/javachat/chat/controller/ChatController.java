@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
+
 
 @RequiredArgsConstructor
 @Controller
@@ -20,11 +22,12 @@ public class ChatController {
      * websocket "/pub/chat/message"로 들어오는 메시징을 처리한다.
      */
     @MessageMapping("/chat/message")
-    public void message(MessageDTO message
-            //, @Header("token") String token
-    ) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String sender = auth.getName();
-        chatService.sendMessage(message, sender);
+    public void message(MessageDTO message, Principal principal) {
+        if (principal != null) {
+            String sender = principal.getName();
+            chatService.sendMessage(message, sender);
+        } else {
+            log.warn("Principal is null.");
+        }
     }
 }
