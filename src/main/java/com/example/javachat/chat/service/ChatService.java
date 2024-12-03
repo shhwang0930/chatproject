@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +24,16 @@ import java.util.List;
 public class ChatService {
 
     private final RedisTemplate<String, Object> redisTemplate;
-    private final JwtTokenProvider jwtTokenProvider;
+    //private final JwtTokenProvider jwtTokenProvider;
     private final ChannelTopic channelTopic;
     private final MessageRepository messageRepository;
 
     @Transactional
-    public void sendMessage(MessageDTO message, String token) {
-        String sender = jwtTokenProvider.getUserNameFromJwt(token);
+    public void sendMessage(MessageDTO message) {
+
+        //String sender = jwtTokenProvider.getUserNameFromJwt(token);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String sender = auth.getName();
         // 로그인 회원 정보로 대화명 설정
         message.setSender(sender);
         // 채팅방 입장시에는 대화명과 메시지를 자동으로 세팅한다.
