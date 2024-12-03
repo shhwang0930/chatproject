@@ -29,11 +29,9 @@ public class ChatService {
     private final MessageRepository messageRepository;
 
     @Transactional
-    public void sendMessage(MessageDTO message) {
+    public void sendMessage(MessageDTO message, String sender) {
 
         //String sender = jwtTokenProvider.getUserNameFromJwt(token);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String sender = auth.getName();
         // 로그인 회원 정보로 대화명 설정
         message.setSender(sender);
         // 채팅방 입장시에는 대화명과 메시지를 자동으로 세팅한다.
