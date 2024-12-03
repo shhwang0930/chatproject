@@ -13,7 +13,9 @@ import lombok.NoArgsConstructor;
 public class RoomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int roomId;
+    private int roomIndex;
+    @Column
+    private String roomId;
     @Column
     private String roomName;
     @Column

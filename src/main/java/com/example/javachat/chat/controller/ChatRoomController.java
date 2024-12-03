@@ -1,8 +1,10 @@
 package com.example.javachat.chat.controller;
 
+import com.example.javachat.chat.model.dto.MessageDTO;
 import com.example.javachat.chat.model.dto.RoomDTO;
 import com.example.javachat.chat.repository.ChatRoomRepository;
 import com.example.javachat.chat.service.ChatRoomService;
+import com.example.javachat.chat.service.ChatService;
 import com.example.javachat.security.JwtTokenProvider;
 import com.example.javachat.security.dto.LoginDTO;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +21,9 @@ import java.util.List;
 @RequestMapping("/chat")
 public class ChatRoomController {
 
-    private final ChatRoomRepository chatRoomRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final ChatRoomService chatRoomService;
+    private final ChatService chatService;
 
     @GetMapping("/user")
     @ResponseBody
@@ -63,5 +65,11 @@ public class ChatRoomController {
     @ResponseBody
     public RoomDTO roomInfo(@PathVariable String roomId) {
         return chatRoomService.roomInfo(roomId);
+    }
+
+    @GetMapping("/msg/{roomId}")
+    @ResponseBody
+    public List<MessageDTO> getMessage(@PathVariable String roomId){
+        return chatService.getMessage(roomId);
     }
 }

@@ -23,12 +23,15 @@ public class ChatRoomService {
     public RoomDTO createRoom(String name) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String roomMng = auth.getName();
+        RoomDTO chatRoom = RoomDTO.create(name);
+        String roomId = chatRoom.getRoomId();
 
         RoomEntity roomEntity = new RoomEntity();
         roomEntity.setRoomMng(roomMng);
         roomEntity.setRoomName(name);
+        roomEntity.setRoomId(roomId);
         jpaChatRoomRepository.save(roomEntity);
-        return chatRoomRepository.createChatRoom(name);
+        return chatRoomRepository.createChatRoom(chatRoom, roomId);
     }
 
     public RoomDTO roomInfo(String roomId) {

@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
+
 @RequiredArgsConstructor
 @Controller
 public class ChatController {
@@ -18,5 +19,4 @@ public class ChatController {
     public void message(MessageDTO message, @Header("token") String token) {
         chatService.sendMessage(message, token);
     }
-
 }

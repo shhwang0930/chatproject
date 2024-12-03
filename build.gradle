@@ -52,6 +52,10 @@ dependencies {
     //mysql
     runtimeOnly 'com.mysql:mysql-connector-j'
     implementation 'com.mysql:mysql-connector-j'
+
+    //rabbitMq
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'org.springframework.boot:spring-boot-starter-reactor-netty:3.0.0'
 }
 
 tasks.named('test') {

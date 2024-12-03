@@ -1,0 +1,26 @@
+1. 메일 작성 - shhwang0930@
+2. 환경 설정
+-인텔리제이 v
+-jdk v
+-환경변수 v
+-oracle?
+
+3. //
+
+stomp 멀티 채팅 프로그래밍
+- 로그인 기능(id, pw, name, email) > spring security, email인증
+- 채팅방 생성(인원수, 방제목, 방번호)
+- 멀티 채팅
+
+개발환경
+- jdk 17
+- spring boot 3.4
+- redis
+- oracle?
+
+
+37304da6-b9ef-4a50-8ad0-d71509a239ac
+
+1203 - 이전 채팅 내역 불러오기
+1204 -  security 활용해서 로그인
+1205 - 퇴장내역 시간 되면 강퇴 이런 기능도

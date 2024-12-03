@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class MessageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String messageId;
+    private int messageId;
 
     @Column
     private String sender;
@@ -23,7 +23,6 @@ public class MessageEntity {
     @Column
     private String msgType;
 
-    @OneToOne
-    @JoinColumn(name = "room_id")
-    private RoomEntity room;
+    @Column
+    private String roomId;
 }

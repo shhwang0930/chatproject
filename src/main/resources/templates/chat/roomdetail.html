@@ -63,6 +63,15 @@
             this.roomId = localStorage.getItem('wschat.roomId');
             this.roomName = localStorage.getItem('wschat.roomName');
             var _this = this;
+
+            // 이전 채팅 내역 가져오기
+            axios.get('/chat/msg/' + this.roomId).then(response => {
+                console.log('Previous Messages:', response.data);  // 서버 응답 확인
+                _this.messages = response.data;  // 이전 채팅 내역을 messages에 할당
+            }).catch(error => {
+                console.error('Error fetching previous messages:', error);
+            });
+
             axios.get('/chat/user').then(response => {
                 _this.token = response.data.token;
                 ws.connect({"token":_this.token}, function(frame) {
