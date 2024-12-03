@@ -49,13 +49,13 @@ public class WebSecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user1 = User.builder()
-                .username("happydaddy")
+                .username("test1")
                 .password(passwordEncoder.encode("1234"))
                 .roles("USER")
                 .build();
 
         UserDetails user2 = User.builder()
-                .username("angrydaddy")
+                .username("test2")
                 .password(passwordEncoder.encode("1234"))
                 .roles("USER")
                 .build();
