@@ -4,10 +4,7 @@ import com.example.javachat.chat.model.dto.MessageDTO;
 import com.example.javachat.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
@@ -25,7 +22,8 @@ public class ChatController {
     public void message(MessageDTO message, Principal principal) {
         if (principal != null) {
             String sender = principal.getName();
-            chatService.sendMessage(message, sender);
+            message.setSender(sender);
+            chatService.sendChatMessage(message);
         } else {
             log.warn("Principal is null.");
         }

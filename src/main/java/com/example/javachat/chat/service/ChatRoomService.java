@@ -16,8 +16,18 @@ import java.util.List;
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final JpaChatRoomRepository jpaChatRoomRepository;
+
+    //채팅창 목록 반환
     public List<RoomDTO> getRooms() {
-        return chatRoomRepository.findAllRoom();
+
+        List<RoomDTO> chatRooms = chatRoomRepository.findAllRoom();
+        // 문제 발생 < 해당 부분에서의 방 목록에 대한 현재 인원수가 나오지 않음
+        chatRooms.stream().forEach(room -> {
+            int userCount = chatRoomRepository.getUserCount(room.getRoomId());
+            room.setUserCount(userCount);
+        });
+
+        return chatRooms;
     }
 
     public RoomDTO createRoom(String name) {

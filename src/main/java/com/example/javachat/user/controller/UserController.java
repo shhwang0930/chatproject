@@ -15,8 +15,6 @@ public class UserController {
     @PostMapping("/join")
     @ResponseBody
     public String join(@RequestBody JoinDTO joinDTO) {
-        System.out.println("Received username: " + joinDTO.getUsername());
-        System.out.println("Received password: " + joinDTO.getPassword());
         return userService.joinUser(joinDTO);
     }
 

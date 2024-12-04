@@ -3,8 +3,8 @@ package com.example.javachat.chat.service;
 
 import com.example.javachat.chat.model.dto.MessageDTO;
 import com.example.javachat.chat.model.entity.MessageEntity;
+import com.example.javachat.chat.repository.ChatRoomRepository;
 import com.example.javachat.chat.repository.MessageRepository;
-import com.example.javachat.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,7 +12,7 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,32 +24,43 @@ import java.util.List;
 public class ChatService {
 
     private final RedisTemplate<String, Object> redisTemplate;
-    //private final JwtTokenProvider jwtTokenProvider;
     private final ChannelTopic channelTopic;
+    private final ChatRoomRepository chatRoomRepository;
     private final MessageRepository messageRepository;
 
-    @Transactional
-    public void sendMessage(MessageDTO message, String sender) {
 
-        //String sender = jwtTokenProvider.getUserNameFromJwt(token);
-        // 로그인 회원 정보로 대화명 설정
-        message.setSender(sender);
-        // 채팅방 입장시에는 대화명과 메시지를 자동으로 세팅한다.
+    /**
+     * destination정보에서 roomId 추출
+     */
+    public String getRoomId(String destination) {
+        int lastIndex = destination.lastIndexOf('/');
+        if (lastIndex != -1)
+            return destination.substring(lastIndex + 1);
+        else
+            return "";
+    }
+
+    /**
+     * 채팅방에 메시지 발송
+     */
+    public void sendChatMessage(MessageDTO message) {
+        message.setUserCount(chatRoomRepository.getUserCount(message.getRoomId()));
+        log.info("--------------- userCnt : "+String.valueOf(chatRoomRepository.getUserCount(message.getRoomId())));
         if (MessageDTO.MessageType.ENTER.equals(message.getType())) {
+            message.setMessage(message.getSender() + "님이 방에 입장했습니다.");
             message.setSender("[알림]");
-            message.setMessage(sender + "님이 입장하셨습니다.");
-        }
-        if (MessageDTO.MessageType.QUIT.equals(message.getType())){
+        } else if (MessageDTO.MessageType.QUIT.equals(message.getType())) {
+            message.setMessage(message.getSender() + "님이 방에서 나갔습니다.");
             message.setSender("[알림]");
-            message.setMessage(sender + "님이 퇴장하셨습니다.");
         }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String sender = message.getSender();
         MessageEntity messageEntity = new MessageEntity();
         messageEntity.setSender(sender);
         messageEntity.setRoomId(message.getRoomId());
         messageEntity.setMsgDesc(message.getMessage());
         messageEntity.setMsgType(String.valueOf(message.getType()));
         messageRepository.save(messageEntity);
-        // Websocket에 발행된 메시지를 redis로 발행(publish)
         redisTemplate.convertAndSend(channelTopic.getTopic(), message);
     }
 
@@ -73,5 +84,7 @@ public class ChatService {
     }
 
 }
+
+
 
 

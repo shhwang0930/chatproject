@@ -19,7 +19,7 @@ public class RoomEntity {
     @Column
     private String roomName;
     @Column
-    private int curCnt;
+    private int userCount;
     @Column
     private String roomMng;
 }

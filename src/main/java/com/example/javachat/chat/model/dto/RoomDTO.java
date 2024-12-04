@@ -13,6 +13,7 @@ public class RoomDTO implements Serializable {
 
     private String roomId;
     private String name;
+    private int userCount;
 
     public static RoomDTO create(String name) {
         RoomDTO chatRoom = new RoomDTO();
