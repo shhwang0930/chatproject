@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Sign Up</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/dist/css/bootstrap.min.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app" v-cloak>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3>회원가입</h3>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" class="form-control" v-model="username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control" v-model="password" placeholder="Enter password">
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary" type="button" @click="joinUser">회원가입</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- JavaScript -->
+<script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
+<script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            username: '',
+            password: ''
+        },
+        methods: {
+            joinUser: function() {
+                if (this.username === '' || this.password === '') {
+                    alert("Username과 Password를 입력해주세요.");
+                    return;
+                }
+                axios.post('/join', {
+                    username: this.username, // Vue 데이터 객체에서 값 가져오기
+                    password: this.password
+                })
+                    .then(response => {
+                        alert("회원가입 성공")
+                        this.username = ''; // 입력 필드 초기화
+                        this.password = '';
+                        window.location.href = '/chat/room';
+                    })
+                    .catch(error => {
+                        alert("회원가입 실패");
+                    });
+            }
+        }
+    });
+</script>
+</body>
+</html>

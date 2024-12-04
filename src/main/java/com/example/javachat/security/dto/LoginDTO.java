@@ -6,11 +6,10 @@ import lombok.Getter;
 @Getter
 public class LoginDTO {
     private String name;
-    private String token;
+    //private String token;
 
     @Builder
-    public LoginDTO(String name, String token) {
+    public LoginDTO(String name) {
         this.name = name;
-        this.token = token;
     }
 }

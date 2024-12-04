@@ -4,9 +4,10 @@ import com.example.javachat.chat.model.dto.MessageDTO;
 import com.example.javachat.chat.model.dto.RoomDTO;
 import com.example.javachat.chat.service.ChatRoomService;
 import com.example.javachat.chat.service.ChatService;
-import com.example.javachat.security.JwtTokenProvider;
+/*import com.example.javachat.security.JwtTokenProvider;*/
 import com.example.javachat.security.dto.LoginDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/chat")
+@Slf4j
 public class ChatRoomController {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    //private final JwtTokenProvider jwtTokenProvider;
     private final ChatRoomService chatRoomService;
     private final ChatService chatService;
 
@@ -29,13 +31,20 @@ public class ChatRoomController {
     public LoginDTO getUserInfo() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        return LoginDTO.builder().name(name).token(jwtTokenProvider.generateToken(name)).build();
+        return LoginDTO.builder().name(name).build();
     }
 
 
     // 채팅 리스트 화면
     @GetMapping("/room")
     public String room(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && !auth.getName().equals("anonymousUser")) {
+            log.info("-----------name : "+ auth.getName()+"---------------");
+            model.addAttribute("loggedIn", true);
+        } else {
+            model.addAttribute("loggedIn", false);
+        }
         return "/chat/room";
     }
 

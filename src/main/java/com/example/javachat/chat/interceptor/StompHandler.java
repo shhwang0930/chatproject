@@ -1,7 +1,7 @@
 package com.example.javachat.chat.interceptor;
 
 
-import com.example.javachat.security.JwtTokenProvider;
+//import com.example.javachat.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StompHandler implements ChannelInterceptor {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    //private final JwtTokenProvider jwtTokenProvider;
 
     // websocket을 통해 들어온 요청이 처리 되기전 실행된다.
     @Override

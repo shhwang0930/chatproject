@@ -1,5 +1,6 @@
 package com.example.javachat.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,6 +16,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 /**
  * Web Security 설정
  */
+@Slf4j
 @Configuration
 public class WebSecurityConfig {
 
@@ -24,11 +26,15 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
                         auth
+                                .requestMatchers("/chat/join", "/chat/room","/chat/rooms").permitAll()
                                 .requestMatchers("/auth/**").authenticated()
                                 .requestMatchers("/chat/**").hasRole("USER")
                                 .anyRequest().permitAll()  // 나머지 경로는 모두 허용
                 )
-                .formLogin(withDefaults());  // 기본 로그인 폼 활성화
+                .formLogin((formLogin) ->
+                        formLogin
+                                .defaultSuccessUrl("/chat/room")
+                );
 
         return http.build();
     }

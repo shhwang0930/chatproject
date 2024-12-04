@@ -1,4 +1,5 @@
 package com.example.javachat.security;
+/*
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +17,11 @@ public class JwtTokenProvider {
 
     private long tokenValidMilisecond = 1000L * 60 * 60; // 1시간만 토큰 유효
 
-    /**
+    */
+/**
      * 이름으로 Jwt Token을 생성한다.
-     */
+     *//*
+
     public String generateToken(String name) {
         Date now = new Date();
         return Jwts.builder()
@@ -29,16 +32,20 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    /**
+    */
+/**
      * Jwt Token을 복호화 하여 이름을 얻는다.
-     */
+     *//*
+
     public String getUserNameFromJwt(String jwt) {
         return getClaims(jwt).getBody().getId();
     }
 
-    /**
+    */
+/**
      * Jwt Token의 유효성을 체크한다.
-     */
+     *//*
+
     public boolean validateToken(String jwt) {
         return this.getClaims(jwt) != null;
     }
@@ -63,4 +70,4 @@ public class JwtTokenProvider {
             throw ex;
         }
     }
-}
+}*/
