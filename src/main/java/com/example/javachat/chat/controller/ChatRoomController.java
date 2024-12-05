@@ -2,7 +2,6 @@ package com.example.javachat.chat.controller;
 
 import com.example.javachat.chat.model.dto.MessageDTO;
 import com.example.javachat.chat.model.dto.RoomDTO;
-import com.example.javachat.chat.repository.ChatRoomRepository;
 import com.example.javachat.chat.service.ChatRoomService;
 import com.example.javachat.chat.service.ChatService;
 import com.example.javachat.security.dto.LoginDTO;
@@ -24,7 +23,6 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
     private final ChatService chatService;
-    private final ChatRoomRepository chatRoomRepository;
 
     @GetMapping("/user")
     @ResponseBody
