@@ -33,6 +33,10 @@
             <button class="btn btn-primary" type="button" @click="sendMessage('TALK')">보내기</button>
         </div>
         <div class="input-group-append">
+            <button class="btn btn-primary" type="button" @click="sendMessage('FILE')"style="background-color: aqua; border-color: aqua" >파일</button>
+            <input type="file" ref="fileInput" style="display: none" @change="handleFileChange" accept="image/*" />
+        </div>
+        <div class="input-group-append">
             <button class="btn btn-primary" type="button" @click="sendMessage('QUIT')"style="background-color: red; border-color: red;">나가기</button>
         </div>
     </div>
@@ -61,7 +65,8 @@
             message: '',
             messages: [],
             token: '',
-            userCount: 0
+            userCount: 0,
+            selectedFile: null
         },
         created() {
             this.roomId = localStorage.getItem('wschat.roomId');
@@ -98,8 +103,20 @@
                 this.message = '';
             },
             recvMessage: function(recv) {
+                //file 받으면 변경 이미지로
                 this.userCount = recv.userCount;
-                this.messages.unshift({"type":recv.type,"sender":recv.sender,"message":recv.message})
+                this.messages.unshift({"type":recv.type,"sender":recv.sender,"message":recv.message});
+                console.log(recv.type);
+            },
+            triggerFileInput(){
+                this.$refs.fileInput.click();
+            },
+            handleFileChange(event){
+                const file = event.target.files[0];
+                if(file){
+                    this.selectedFile = file;
+                    console.log("select file", file);
+                }
             }
         }
     });

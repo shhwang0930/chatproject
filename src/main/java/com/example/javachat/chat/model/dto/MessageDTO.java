@@ -18,7 +18,7 @@ public class MessageDTO {
     }
 
     public enum MessageType {
-        ENTER, TALK, QUIT;
+        ENTER, TALK, QUIT, FILE;
     }
 
     private MessageType type;
